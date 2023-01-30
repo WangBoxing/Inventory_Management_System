@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.server.mapper.StockMapper">
+
+    <delete id="deleteSaleStock">
+        delete from sale_stock where sale_id = #{saleId} and stock_id = #{stockId}
+    </delete>
+
+    <insert id="setSaleStock">
+        insert into sale_stock(sale_id, stock_id) values(#{saleId}, #{stockId})
+    </insert>
+
+    <select id="findPage" resultType="com.example.server.entity.Stock">
+        select stock.*, sys_user.nickname as admin from stock
+        left join sys_user
+        on stock.admin_id = sys_user.id
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>
